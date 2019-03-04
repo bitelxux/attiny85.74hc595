@@ -21,23 +21,27 @@ byte byte2;
 byte command;
 unsigned int value;
 
-void hellow(){
-  digitalWrite(RX, HIGH);
-  delay(100);
-  digitalWrite(RX, LOW);
-  delay(100);
+void hello(){
+   for (byte i=0; i<5; i++){
+    LightTheThing(0b11111111);    
+    delay(70);    
+
+    LightTheThing(0b00000000);    
+    delay(70);    
+   }
+}
+
+void LightTheThing(byte value){
+    digitalWrite(PIN_LATCH, LOW);
+    shiftOut(PIN_DATA, PIN_CLOCK, LSBFIRST, value);
+    digitalWrite(PIN_LATCH, HIGH) ;  
 }
 
 void error(){
   for (int i=0; i<5; i++){
-    digitalWrite(PIN_LATCH, LOW);
-    shiftOut(PIN_DATA, PIN_CLOCK, LSBFIRST, 255);
-    digitalWrite(PIN_LATCH, HIGH) ;
+    LightTheThing(0b11111111);
     delay(50);    
-
-    digitalWrite(PIN_LATCH, LOW);
-    shiftOut(PIN_DATA, PIN_CLOCK, LSBFIRST, 0);
-    digitalWrite(PIN_LATCH, HIGH) ;
+    LightTheThing(0b00000000);
     delay(50);    
   }
 
@@ -66,6 +70,8 @@ void setup() {
   chaseArray[5] = 32;  //00100000
   chaseArray[6] = 64;  //01000000
   chaseArray[7] = 128; //10000000  
+
+  hello();
 }
 
 void checkDataIn(){
@@ -119,9 +125,7 @@ void checkDataIn(){
 void game1(){
   for (int i= 0; i<8; i++) {
     checkDataIn();
-    digitalWrite(PIN_LATCH, LOW);
-    shiftOut(PIN_DATA, PIN_CLOCK, LSBFIRST, chaseArray[Sequence[i]]);
-    digitalWrite(PIN_LATCH, HIGH) ;
+    LightTheThing(chaseArray[Sequence[i]]);
     delay(pause);
   }  
 }
@@ -129,9 +133,7 @@ void game1(){
 void game2(){
   for (int i=7; i>=0; i--) {
     checkDataIn();
-    digitalWrite(PIN_LATCH, LOW);
-    shiftOut(PIN_DATA, PIN_CLOCK, LSBFIRST, chaseArray[Sequence[i]]);
-    digitalWrite(PIN_LATCH, HIGH) ;
+    LightTheThing(chaseArray[Sequence[i]]);
     delay(pause);
   }  
 }
@@ -140,17 +142,13 @@ void game3(){
   
   for (int i=0; i<8; i++) {
     checkDataIn();
-    digitalWrite(PIN_LATCH, LOW);
-    shiftOut(PIN_DATA, PIN_CLOCK, LSBFIRST, chaseArray[Sequence[i]]);
-    digitalWrite(PIN_LATCH, HIGH) ;
+    LightTheThing(chaseArray[Sequence[i]]);
     delay(pause);
   }
   
   for (int i=6; i>0; i--) {
     checkDataIn();
-    digitalWrite(PIN_LATCH, LOW);
-    shiftOut(PIN_DATA, PIN_CLOCK, LSBFIRST, chaseArray[Sequence[i]]);
-    digitalWrite(PIN_LATCH, HIGH) ;
+    LightTheThing(chaseArray[Sequence[i]]);
     delay(pause);
   }  
 
