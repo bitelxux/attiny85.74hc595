@@ -125,6 +125,9 @@ void checkDataIn(){
 void game1(){
   for (int i= 0; i<8; i++) {
     checkDataIn();
+    if (game != 1) {
+      break;
+    }
     LightTheThing(chaseArray[Sequence[i]]);
     delay(pause);
   }
@@ -133,6 +136,9 @@ void game1(){
 void game2(){
   for (int i=7; i>=0; i--) {
     checkDataIn();
+    if (game != 2) {
+      break;
+    }
     LightTheThing(chaseArray[Sequence[i]]);
     delay(pause);
   }
@@ -142,12 +148,18 @@ void game3(){
 
   for (int i=0; i<8; i++) {
     checkDataIn();
+    if (game != 3) {
+      break;
+    }
     LightTheThing(chaseArray[Sequence[i]]);
     delay(pause);
   }
 
   for (int i=6; i>0; i--) {
     checkDataIn();
+    if (game != 3) {
+      break;
+    }
     LightTheThing(chaseArray[Sequence[i]]);
     delay(pause);
   }
@@ -158,6 +170,9 @@ void game4(){
 
   for (int i=0; i<255; i++) {
     checkDataIn();
+    if (game != 4) {
+      break;
+    }
     LightTheThing(i);
     delay(pause);
   }
