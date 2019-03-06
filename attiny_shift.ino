@@ -23,26 +23,26 @@ unsigned int value;
 
 void hello(){
    for (byte i=0; i<5; i++){
-    LightTheThing(0b11111111);    
-    delay(70);    
+    LightTheThing(0b11111111);
+    delay(70);
 
-    LightTheThing(0b00000000);    
-    delay(70);    
+    LightTheThing(0b00000000);
+    delay(70);
    }
 }
 
 void LightTheThing(byte value){
     digitalWrite(PIN_LATCH, LOW);
     shiftOut(PIN_DATA, PIN_CLOCK, LSBFIRST, value);
-    digitalWrite(PIN_LATCH, HIGH) ;  
+    digitalWrite(PIN_LATCH, HIGH) ;
 }
 
 void error(){
   for (int i=0; i<5; i++){
     LightTheThing(0b11111111);
-    delay(50);    
+    delay(50);
     LightTheThing(0b00000000);
-    delay(50);    
+    delay(50);
   }
 
   // flush
@@ -69,17 +69,17 @@ void setup() {
   chaseArray[4] = 16;  //00010000
   chaseArray[5] = 32;  //00100000
   chaseArray[6] = 64;  //01000000
-  chaseArray[7] = 128; //10000000  
+  chaseArray[7] = 128; //10000000
 
   hello();
 }
 
 void checkDataIn(){
-  
+
   if (bt.available()<2) {
     return(0);
   }
-  
+
   byte1 = bt.read();
   byte2 = bt.read();
 
@@ -93,7 +93,7 @@ void checkDataIn(){
 
   if (command != 15){
         bt.print("msg:");
-        bt.print(byte1, BIN);    
+        bt.print(byte1, BIN);
         bt.print(", ");
         bt.print(byte2, BIN);
         bt.print(", ");
@@ -115,7 +115,7 @@ void checkDataIn(){
     default:
         error();
         game = 1;
-  }   
+  }
 
   return(1);
 
@@ -127,7 +127,7 @@ void game1(){
     checkDataIn();
     LightTheThing(chaseArray[Sequence[i]]);
     delay(pause);
-  }  
+  }
 }
 
 void game2(){
@@ -135,24 +135,36 @@ void game2(){
     checkDataIn();
     LightTheThing(chaseArray[Sequence[i]]);
     delay(pause);
-  }  
+  }
 }
 
 void game3(){
-  
+
   for (int i=0; i<8; i++) {
     checkDataIn();
     LightTheThing(chaseArray[Sequence[i]]);
     delay(pause);
   }
-  
+
   for (int i=6; i>0; i--) {
     checkDataIn();
     LightTheThing(chaseArray[Sequence[i]]);
     delay(pause);
-  }  
+  }
 
 }
+
+void game4(){
+
+  for (int i=0; i<255; i++) {
+    checkDataIn();
+    LightTheThing(i);
+    delay(pause);
+  }
+
+}
+
+
 
 void loop() {
 
@@ -165,7 +177,11 @@ void loop() {
       break;
     case 3:
       game3();
-      break;      
+      break;
+    case 4:
+      game4();
+      break;
+
   }
 
 }
